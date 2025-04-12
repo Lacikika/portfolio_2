@@ -3,43 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Projects</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Portfolio | Projects</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/animations.css">
 </head>
 <body>
-    <header>
-        <h1>My Portfolio</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
+    <nav class="nav-container">
+        <div class="nav-content">
+            <div class="logo">PORT<span class="accent">FOLIO</span></div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/projects.html" class="active">Projects</a>
+                <a href="/about.html">About</a>
+                <a href="/contact.html">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container page-transition">
         <section id="projects">
-            <h2>Projects</h2>
-            <div class="project">
-                <h3>Project 1</h3>
-                <p>Description of project 1.</p>
-                <a href="https://example.com/project1" target="_blank">View Project</a>
-            </div>
-            <div class="project">
-                <h3>Project 2</h3>
-                <p>Description of project 2.</p>
-                <a href="https://example.com/project2" target="_blank">View Project</a>
-            </div>
-            <div class="project">
-                <h3>Project 3</h3>
-                <p>Description of project 3.</p>
-                <a href="https://example.com/project3" target="_blank">View Project</a>
+            <h1>My Projects</h1>
+            <div id="github-projects" class="projects-grid">
+                <div class="loading"></div>
             </div>
         </section>
     </main>
-    <footer>
-        <p>&copy; 2023 My Portfolio</p>
+
+    <footer class="footer">
+        <p>&copy; 2025 Portfolio. All rights reserved.</p>
     </footer>
+
+    <div class="cursor"></div>
+    <script type="module">
+        import { fetchGitHubRepos } from '/js/github.js';
+
+        async function initProjects() {
+            const repos = await fetchGitHubRepos();
+            const projectsContainer = document.getElementById('github-projects');
+            projectsContainer.innerHTML = repos.map(repo => `
+                <div class="project-card">
+                    <h3>${repo.name}</h3>
+                    <p>${repo.description || 'No description available.'}</p>
+                    <a href="${repo.html_url}" target="_blank" class="repo-link">View Repository</a>
+                </div>
+            `).join('');
+        }
+
+        initProjects();
+    </script>
+    <script src="/js/main.js"></script>
 </body>
 </html>
