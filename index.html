@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Home</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/animations.css">
+</head>
+<body>
+    <nav class="nav-container">
+        <div class="nav-content">
+            <div class="logo">PORT<span class="accent">FOLIO</span></div>
+            <div class="nav-links">
+                <a href="/" class="active">Home</a>
+                <a href="/projects.html">Projects</a>
+                <a href="/about.html">About</a>
+                <a href="/contact.html">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container page-transition">
+        <section class="hero">
+            <div id="profile-section" class="loading-container">
+                <div class="loading"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Portfolio. All rights reserved.</p>
+    </footer>
+
+    <div class="cursor"></div>
+    <script type="module">
+        import { fetchGitHubProfile } from '/js/github.js';
+
+        async function initHomePage() {
+            const profile = await fetchGitHubProfile();
+            if (profile) {
+                const profileSection = document.getElementById('profile-section');
+                profileSection.innerHTML = `
+                    <div class="hero-content">
+                        <img src="${profile.avatar_url}" alt="Profile" class="hero-avatar">
+                        <h1>Welcome to My Portfolio</h1>
+                        <p class="hero-bio">${profile.bio || ''}</p>
+                        <div class="hero-stats">
+                            <span>${profile.public_repos} Projects</span>
+                            <span>${profile.followers} Followers</span>
+                            <span>${profile.following} Following</span>
+                        </div>
+                        <div class="hero-links">
+                            <a href="/projects.html" class="cta-button">View My Projects</a>
+                            <a href="/about.html" class="cta-button secondary">About Me</a>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        initHomePage();
+    </script>
+    <script src="/js/main.js"></script>
+</body>
+</html>
