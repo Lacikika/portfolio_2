@@ -1,93 +1,55 @@
-/* Custom cursor */
 .cursor {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--accent);
+    width: 25px;
+    height: 25px;
+    border: 2px solid var(--accent-color);
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
     z-index: 9999;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease;
     transform-origin: center center;
 }
 
-/* Animations */
+.cursor.hover {
+    transform: scale(1.5);
+    background-color: var(--accent-color);
+}
+
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes glow {
-    0% { box-shadow: 0 0 5px var(--accent); }
-    50% { box-shadow: 0 0 20px var(--accent); }
-    100% { box-shadow: 0 0 5px var(--accent); }
+    0% {
+        box-shadow: 0 0 5px var(--accent-color);
+    }
+    50% {
+        box-shadow: 0 0 25px var(--accent-color);
+    }
+    100% {
+        box-shadow: 0 0 5px var(--accent-color);
+    }
 }
 
-/* Apply animations */
-.github-profile,
+.hero-content h1 {
+    animation: fadeIn 1s ease-out, glow 2s infinite alternate;
+}
+
 .project-card {
-    animation: fadeIn 0.6s ease-out forwards;
-}
-
-.profile-avatar {
-    animation: glow 3s infinite;
-}
-
-.project-card {
-    animation-delay: calc(var(--animation-order) * 0.1s);
-}
-
-/* Hover effects */
-.project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 255, 0, 0.1);
-}
-
-.view-readme:hover,
-.repo-link:hover {
-    transform: scale(1.05);
-    filter: brightness(1.2);
-}
-
-/* Loading animation */
-.loading {
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: var(--accent);
-    animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-/* Page transitions */
-.page-transition {
-    opacity: 0;
-    transform: translateY(20px);
     animation: fadeIn 0.5s ease-out forwards;
-}
-
-/* Modal animations */
-.modal {
     opacity: 0;
-    transition: opacity 0.3s ease-in-out;
 }
 
-.modal.active {
-    opacity: 1;
-}
-
-.modal-content {
-    transform: translateY(-50px);
-    opacity: 0;
-    transition: all 0.3s ease-in-out;
-}
-
-.modal.active .modal-content {
-    transform: translateY(0);
-    opacity: 1;
-}
+.project-card:nth-child(1) { animation-delay: 0.1s; }
+.project-card:nth-child(2) { animation-delay: 0.2s; }
+.project-card:nth-child(3) { animation-delay: 0.3s; }
+.project-card:nth-child(4) { animation-delay: 0.4s; }
+.project-card:nth-child(5) { animation-delay: 0.5s; }
+.project-card:nth-child(6) { animation-delay: 0.6s; }

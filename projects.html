@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A showcase of my latest projects.">
     <title>Portfolio | Projects</title>
-    <link rel="stylesheet" href="/styles/main.css">
-    <link rel="stylesheet" href="/styles/animations.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="cursor"></div>
+
     <nav class="nav-container">
         <div class="nav-content">
-            <div class="logo">PORT<span class="accent">FOLIO</span></div>
+            <div class="logo">LACIKIKA</div>
             <div class="nav-links">
                 <a href="/">Home</a>
                 <a href="/projects.html" class="active">Projects</a>
@@ -20,37 +24,64 @@
         </div>
     </nav>
 
-    <main class="container page-transition">
+    <main class="container">
         <section id="projects">
             <h1>My Projects</h1>
             <div id="github-projects" class="projects-grid">
-                <div class="loading"></div>
+                <p>Loading projects...</p>
             </div>
         </section>
     </main>
 
+    <div id="readme-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div id="readme-content"></div>
+        </div>
+    </div>
+
     <footer class="footer">
-        <p>&copy; 2025 Portfolio. All rights reserved.</p>
+        <p>&copy; 2024 Lacikika. All Rights Reserved.</p>
     </footer>
 
-    <div class="cursor"></div>
     <script type="module">
-        import { fetchGitHubRepos } from '/js/github.js';
+        import { fetchGitHubRepos, fetchRepoReadme } from './js/github.js';
+        import { marked } from 'https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js';
 
         async function initProjects() {
             const repos = await fetchGitHubRepos();
             const projectsContainer = document.getElementById('github-projects');
-            projectsContainer.innerHTML = repos.map(repo => `
-                <div class="project-card">
-                    <h3>${repo.name}</h3>
-                    <p>${repo.description || 'No description available.'}</p>
-                    <a href="${repo.html_url}" target="_blank" class="repo-link">View Repository</a>
-                </div>
-            `).join('');
+            if (repos) {
+                projectsContainer.innerHTML = repos.map(repo => `
+                    <div class="project-card" data-repo="${repo.name}">
+                        <h3>${repo.name}</h3>
+                        <p>${repo.description || 'No description available.'}</p>
+                        <button class="view-readme">View README</button>
+                        <a href="${repo.html_url}" target="_blank">View on GitHub</a>
+                    </div>
+                `).join('');
+            }
         }
+
+        async function openReadmeModal(repoName) {
+            const readmeContent = await fetchRepoReadme(repoName);
+            const readmeHtml = readmeContent ? marked(readmeContent) : '<p>No README found.</p>';
+            document.getElementById('readme-content').innerHTML = readmeHtml;
+            document.getElementById('readme-modal').style.display = 'block';
+        }
+
+        document.addEventListener('click', e => {
+            if (e.target.classList.contains('view-readme')) {
+                const repoName = e.target.closest('.project-card').dataset.repo;
+                openReadmeModal(repoName);
+            }
+            if (e.target.classList.contains('close-button')) {
+                document.getElementById('readme-modal').style.display = 'none';
+            }
+        });
 
         initProjects();
     </script>
-    <script src="/js/main.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

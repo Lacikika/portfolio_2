@@ -1,20 +1,16 @@
-// Custom cursor implementation
 document.addEventListener('DOMContentLoaded', () => {
     const cursor = document.querySelector('.cursor');
-    
-    document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
+
+    document.addEventListener('mousemove', e => {
+        cursor.setAttribute('style', `top: ${e.pageY}px; left: ${e.pageX}px;`);
     });
 
-    // Add hover effect for interactive elements
-    document.querySelectorAll('a, button').forEach(element => {
-        element.addEventListener('mouseenter', () => {
-            cursor.style.transform = 'scale(1.5)';
+    document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseover', () => {
+            cursor.classList.add('hover');
         });
-        
-        element.addEventListener('mouseleave', () => {
-            cursor.style.transform = 'scale(1)';
+        el.addEventListener('mouseout', () => {
+            cursor.classList.remove('hover');
         });
     });
 });

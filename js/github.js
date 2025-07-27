@@ -1,34 +1,33 @@
-async function fetchGitHubProfile() {
+const USERNAME = 'Lacikika';
+const API_URL = `https://api.github.com/users/${USERNAME}`;
+
+export async function fetchGitHubProfile() {
     try {
-        const response = await fetch('https://api.github.com/users/Lacikika');
-        const profile = await response.json();
-        return profile;
+        const response = await fetch(API_URL);
+        return await response.json();
     } catch (error) {
         console.error('Error fetching GitHub profile:', error);
         return null;
     }
 }
 
-async function fetchGitHubRepos() {
+export async function fetchGitHubRepos() {
     try {
-        const response = await fetch('https://api.github.com/users/Lacikika/repos');
-        const repos = await response.json();
-        return repos;
+        const response = await fetch(`${API_URL}/repos?sort=updated`);
+        return await response.json();
     } catch (error) {
         console.error('Error fetching GitHub repos:', error);
-        return [];
-    }
-}
-
-async function fetchReadme(repo) {
-    try {
-        const response = await fetch(`https://api.github.com/repos/Lacikika/${repo}/readme`);
-        const data = await response.json();
-        return atob(data.content); // Decode base64 content
-    } catch (error) {
-        console.error(`Error fetching README for ${repo}:`, error);
         return null;
     }
 }
 
-export { fetchGitHubProfile, fetchGitHubRepos, fetchReadme };
+export async function fetchRepoReadme(repoName) {
+    try {
+        const response = await fetch(`https://api.github.com/repos/${USERNAME}/${repoName}/readme`);
+        const data = await response.json();
+        return atob(data.content);
+    } catch (error) {
+        console.error(`Error fetching README for ${repoName}:`, error);
+        return null;
+    }
+}
