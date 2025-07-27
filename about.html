@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn more about me and my skills.">
     <title>Portfolio | About</title>
-    <link rel="stylesheet" href="/styles/main.css">
-    <link rel="stylesheet" href="/styles/animations.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="cursor"></div>
+
     <nav class="nav-container">
         <div class="nav-content">
-            <div class="logo">PORT<span class="accent">FOLIO</span></div>
+            <div class="logo">LACIKIKA</div>
             <div class="nav-links">
                 <a href="/">Home</a>
                 <a href="/projects.html">Projects</a>
@@ -20,22 +24,48 @@
         </div>
     </nav>
 
-    <main class="container page-transition">
-        <section>
+    <main class="container">
+        <section id="about">
             <h1>About Me</h1>
-            <p>Welcome to my portfolio! Here you can learn more about me and my work.</p>
-        </section>
-        <section>
-            <h2>Background</h2>
-            <p>Details about my background, education, and experience will go here.</p>
+            <div id="about-content">
+                <p>Loading about information...</p>
+            </div>
         </section>
     </main>
 
     <footer class="footer">
-        <p>&copy; 2025 Portfolio. All rights reserved.</p>
+        <p>&copy; 2024 Lacikika. All Rights Reserved.</p>
     </footer>
 
-    <div class="cursor"></div>
-    <script src="/js/main.js"></script>
+    <script type="module">
+        import { fetchGitHubProfile } from './js/github.js';
+
+        async function initAboutPage() {
+            const profile = await fetchGitHubProfile();
+            if (profile) {
+                const aboutContent = document.getElementById('about-content');
+                aboutContent.innerHTML = `
+                    <img src="${profile.avatar_url}" alt="Profile Picture" style="width: 150px; border-radius: 50%;">
+                    <h2>${profile.name}</h2>
+                    <p>I am a passionate and results-driven developer with a knack for creating elegant and efficient solutions. My journey in the world of programming has been fueled by a relentless curiosity and a desire to build things that make a difference. I thrive in collaborative environments and am always eager to learn new technologies and take on challenging projects.</p>
+                    <h3>Skills</h3>
+                    <ul>
+                        <li>HTML, CSS, JavaScript</li>
+                        <li>React, Vue, Node.js</li>
+                        <li>Python, Java, C++</li>
+                        <li>SQL, MongoDB</li>
+                        <li>Git, Docker, AWS</li>
+                    </ul>
+                    <h3>GitHub Stats</h3>
+                    <p>Followers: ${profile.followers}</p>
+                    <p>Following: ${profile.following}</p>
+                    <p>Public Repos: ${profile.public_repos}</p>
+                `;
+            }
+        }
+
+        initAboutPage();
+    </script>
+    <script src="js/main.js"></script>
 </body>
 </html>
